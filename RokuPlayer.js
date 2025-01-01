@@ -1,8 +1,10 @@
-cfg.Light
+cfg.Light;
+app.LoadPlugin( "Xml2Js" );
 var address = "http://192.168.70.236:8060/";
 //Called when application is started.
 function OnStart()
 {
+plg = app.CreateXml2Js();
 	//Create a layout with objects vertically centered.
 	lay = app.CreateLayout( "Linear", "VCenter,FillXY" )
 
@@ -33,7 +35,17 @@ function handleReply( error, reply )
     if( error ) alert( reply );
     else
     {
+    plg.ParseString( reply, OnResult );
         //var funfact = reply.slice( reply.indexOf("<i>") + 3, reply.indexOf("</i>") );
-        alert( reply );
+        //alert( reply );
     }
+}
+
+function OnResult( err, result )
+{
+  alert( JSON.stringify(result["tv-channels"]) );
+  for(c=0;c<result["tv-channels"]["channel"].length;c++){
+    alert( result["tv-channels"]["channel"][c]["channel-id"] + " = " + result["tv-channels"]["channel"][c]["name"]);
+    }
+  //result.tv_channels
 }
